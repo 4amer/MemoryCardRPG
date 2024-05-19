@@ -55,8 +55,11 @@ public class DictionaryModel : AbstractModel
                 return;
             }
         }
-            
-        _dataController.AddGroup(groupName);
+
+        GroupData data = new GroupData(groupName, null);
+
+        _dataController.AddGroup(data);
+        _viewModel.CreateNewGroup(data);
     }
 
     public void ShowDialog()

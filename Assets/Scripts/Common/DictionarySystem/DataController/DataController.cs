@@ -40,10 +40,8 @@ public class DataController : IDataController, IInitializable
         }
     }
 
-    public void AddGroup(string groupName)
+    public void AddGroup(GroupData data)
     {
-        GroupData data = new GroupData(groupName, null);
-
         SaveGroupData(data);
         _groupDatas.Add(data);
     }

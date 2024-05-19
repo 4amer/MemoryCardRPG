@@ -38,6 +38,26 @@ public class DictionaryViewModel : AbstractViewModel
         return null;
     }
 
+    public void ShowAddNewGroupDialog()
+    {
+        _view.ShowAddNewGroupDialog();
+    }
+
+    public void HideAddNewGroupDialog()
+    {
+        _view.HideAddNewGroupDialog();
+    }
+
+    public void ShowErrorMessage(string text)
+    {
+        _view.ShowErrorMessage(text);
+    }
+
+    public void CreateNewGroup(GroupData data)
+    {
+        _view.CreateNewGroup(data);
+    }
+
     private void SearchFieldChanged(string text)
     {
         Debug.Log(text);
@@ -66,21 +86,6 @@ public class DictionaryViewModel : AbstractViewModel
     private void PlayButtonClicked()
     {
 
-    }
-
-    public void ShowAddNewGroupDialog()
-    {
-        _view.ShowAddNewGroupDialog();
-    }
-
-    public void HideAddNewGroupDialog()
-    {
-        _view.HideAddNewGroupDialog();
-    }
-
-    public void ShowErrorMessage(string text)
-    {
-        _view.ShowErrorMessage(text);
     }
 
     private void AddNewGroupDialogButtonClicked(string groupName)

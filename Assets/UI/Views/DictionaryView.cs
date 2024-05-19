@@ -18,6 +18,11 @@ public class DictionaryView : AbstractView
     [SerializeField] private TMP_InputField _addNewGroupInputText = null;
     [SerializeField] private TextMeshProUGUI _errorText = null;
 
+    [SerializeField] private Transform _groupButtonContainer = null;
+    [SerializeField] private GameObject _groupButtonPrefab = null;
+    [SerializeField] private Transform _wordButtonContainer = null;
+    [SerializeField] private GameObject _wordButtonPrefab = null;
+
     private DictionaryData _dictionaryData = null;
 
     //Search field
@@ -154,5 +159,11 @@ public class DictionaryView : AbstractView
     public void ClearErrorMessage()
     {
         _errorText.text = string.Empty;
+    }
+
+    public void CreateNewGroup(GroupData data)
+    {
+        GameObject groupButton = Instantiate(_groupButtonPrefab, _groupButtonContainer);
+        groupButton.GetComponent<GroupButton>().Init(data);
     }
 }

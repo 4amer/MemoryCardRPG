@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDataController
 {
-    public void AddGroup(string groupName);
+    public void AddGroup(GroupData data);
 
     public void AddWord(string groupName, WordData wordData);
 
