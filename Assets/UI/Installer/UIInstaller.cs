@@ -15,6 +15,5 @@ public class UIInstaller : MonoInstaller
         Container.Bind<DictionaryView>().FromComponentInHierarchy().AsSingle();
         Container.Bind<DictionaryViewModel>().FromNew().AsSingle().NonLazy();
         Container.Bind<DictionaryModel>().FromNew().AsSingle().NonLazy();
-        Container.Bind<DictionaryData>().FromNew().AsSingle().NonLazy();
     }
 }

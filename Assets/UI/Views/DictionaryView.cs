@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -13,15 +14,25 @@ public class DictionaryView : AbstractView
     [SerializeField] private TMP_Dropdown _searchDropDown = null;
     [SerializeField] private TMP_Dropdown _gameModeDropDown = null;
 
+    [SerializeField] private GameObject _newGroupDialog = null;
+    [SerializeField] private TMP_InputField _addNewGroupInputText = null;
+    [SerializeField] private TextMeshProUGUI _errorText = null;
+
     private DictionaryData _dictionaryData = null;
 
+    //Search field
     public event Action<string> SearchFieldChanged;
     public event Action<SearchFilters> FilterChanged;
 
+    //Bottom menu
     public event Action OptinsButtonClicked;
-    public event Action AddGroupButtonClicked;
+    public event Action MenuAddGroupButtonClicked;
     public event Action<GameModes> GameModeChanged;
     public event Action PlayButtonClicked;
+
+    //Add new group dialog
+    public event Action<string> AddNewGroupDialogButtonClicked;
+    public event Action CloseDialogButtonClicked;
 
     [Inject]
     public void Construct(DictionaryData data)
@@ -53,7 +64,7 @@ public class DictionaryView : AbstractView
 
     public void WhenAddGroupButtonClicked()
     {
-        AddGroupButtonClicked?.Invoke();
+        MenuAddGroupButtonClicked?.Invoke();
     }
 
     public void WhenGameModeChanged()
@@ -65,6 +76,17 @@ public class DictionaryView : AbstractView
     public void WhenPlayButtonClicked()
     {
         PlayButtonClicked?.Invoke();
+    }
+
+    public void WhenAddNewGroupDialogButtonClicked()
+    {
+        string groupName = _addNewGroupInputText.text;
+        AddNewGroupDialogButtonClicked?.Invoke(groupName);
+    }
+
+    public void WhenCloseDialogButtonClicked()
+    {
+        CloseDialogButtonClicked?.Invoke();
     }
 
     private GameModes FindGameMode()
@@ -105,5 +127,32 @@ public class DictionaryView : AbstractView
                 break;
         }
         return filter;
+    }
+
+    public void ShowAddNewGroupDialog()
+    {
+        _newGroupDialog.active = true;
+    }
+
+    public void HideAddNewGroupDialog()
+    {
+        _newGroupDialog.active = false;
+        ClearNewGroupInputField();
+        ClearErrorMessage();
+    }
+
+    public void ClearNewGroupInputField()
+    {
+        _addNewGroupInputText.text = string.Empty;
+    }
+
+    public void ShowErrorMessage(string text)
+    {
+        _errorText.text = text;
+    }
+
+    public void ClearErrorMessage()
+    {
+        _errorText.text = string.Empty;
     }
 }

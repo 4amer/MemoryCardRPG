@@ -7,20 +7,25 @@ using Zenject;
 
 public class DictionaryViewModel : AbstractViewModel
 {
-    private DictionaryModel _dictionaryModel = null;
+    private DictionaryModel _model = null;
+    private DictionaryView _view = null;
 
     [Inject]
     public void Construct(DictionaryView view, DictionaryModel model)
     {
-        view.SearchFieldChanged += SearchFieldChanged;
-        view.FilterChanged += FilterChanged;
+        _view = view;
+        _view.SearchFieldChanged += SearchFieldChanged;
+        _view.FilterChanged += FilterChanged;
 
-        view.GameModeChanged += GameModeChanged;
-        view.PlayButtonClicked += PlayButtonClicked;
-        view.AddGroupButtonClicked += AddGroupButtonClicked;
-        view.OptinsButtonClicked += OptinsButtonClicked;
+        _view.GameModeChanged += GameModeChanged;
+        _view.PlayButtonClicked += PlayButtonClicked;
+        _view.MenuAddGroupButtonClicked += MenuAddGroupButtonClicked;
+        _view.OptinsButtonClicked += OptinsButtonClicked;
 
-        _dictionaryModel = model;
+        _view.AddNewGroupDialogButtonClicked += AddNewGroupDialogButtonClicked;
+        _view.CloseDialogButtonClicked += CloseDialogButtonClicked;
+
+        _model = model;
     }
 
     public override ViewData GetData()
@@ -43,23 +48,48 @@ public class DictionaryViewModel : AbstractViewModel
         Debug.Log(filter);
     }
 
-    public void OptinsButtonClicked()
+    private void OptinsButtonClicked()
     {
 
     }
 
-    public void AddGroupButtonClicked()
+    private void MenuAddGroupButtonClicked()
+    {
+        _model.ShowDialog();
+    }
+
+    private void GameModeChanged(GameModes gameMode)
     {
 
     }
 
-    public void GameModeChanged(GameModes gameMode)
+    private void PlayButtonClicked()
     {
 
     }
 
-    public void PlayButtonClicked()
+    public void ShowAddNewGroupDialog()
     {
+        _view.ShowAddNewGroupDialog();
+    }
 
+    public void HideAddNewGroupDialog()
+    {
+        _view.HideAddNewGroupDialog();
+    }
+
+    public void ShowErrorMessage(string text)
+    {
+        _view.ShowErrorMessage(text);
+    }
+
+    private void AddNewGroupDialogButtonClicked(string groupName)
+    {
+        _model.AddGroup(groupName);
+    }
+
+    private void CloseDialogButtonClicked()
+    {
+        _model.CloseDialog();
     }
 }
