@@ -8,7 +8,7 @@ public interface IDataController
 
     public void AddWord(string groupName, WordData wordData);
 
-    public string[] GetAllGroups();
+    public GroupData[] GetAllGroups();
 
     public string[] GetWordsFromGroup(string groupName);
 

@@ -3,33 +3,49 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 
-public class DataController : IDataController
+public class DataController : IDataController, IInitializable
 {
-    private GroupData[] _groupDatas = null;
+    private List<GroupData> _groupDatas = new List<GroupData>();
     private string _currentSectionName = "English";
-    public void SaveData(GroupData groupData)
+
+    public void Initialize()
+    {
+        LoadGroupData();
+    }
+
+    public void SaveGroupData(GroupData groupData)
     {
         string data = JsonUtility.ToJson(groupData);
-        string filePath = Application.persistentDataPath + "/" + _currentSectionName + "/" + groupData.groupName + ".json";
+        string filePath = Application.persistentDataPath + "/" + groupData.groupName + ".json";
+        //string filePath = Application.persistentDataPath + "/" + _currentSectionName + "/" + groupData.groupName + ".json";
         Debug.Log(filePath);
         File.WriteAllText(filePath, data);
     }
 
-    public void LoadData()
+    public void LoadGroupData()
     {
-        string filePath = Application.persistentDataPath + "/" + _currentSectionName;
+        string filePath = Application.persistentDataPath;
+        //string filePath = Application.persistentDataPath + "/" + _currentSectionName;
         var info = new DirectoryInfo(filePath);
         var fileInfo = info.GetFiles();
+        Debug.Log("LOAD GROUPS");
         foreach (var file in fileInfo)
         {
-            Debug.Log(file.FullName);
+            //Debug.Log(file);
+            string text = File.ReadAllText(file.FullName);
+            GroupData myObject = JsonUtility.FromJson<GroupData>(text);
+            _groupDatas.Add(myObject);
         }
     }
 
     public void AddGroup(string groupName)
     {
+        GroupData data = new GroupData(groupName, null);
 
+        SaveGroupData(data);
+        _groupDatas.Add(data);
     }
 
     public void AddWord(string groupName, WordData wordData)
@@ -37,9 +53,9 @@ public class DataController : IDataController
 
     }
 
-    public string[] GetAllGroups()
+    public GroupData[] GetAllGroups()
     {
-        return null;
+        return _groupDatas.ToArray();
     }
 
     public string[] GetWordsFromGroup(string groupName)

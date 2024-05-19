@@ -14,6 +14,8 @@ public class DictionaryModel : AbstractModel
 
     private const string ErrorTextInputIsEmty = "Field is empty!";
     private const string ErrorTextHasWhiteSpace = "There is spaces in you text!";
+    private const string ErrorTextHasSpecialCharacters = "There are special characters in your text!";
+    private const string ErrorTextGroupAlreadyExist = "This group is already exist!";
 
     [Inject]
     public void Construct(DictionaryViewModel viewModel, DictionaryData data, IDataController dataController)
@@ -40,6 +42,20 @@ public class DictionaryModel : AbstractModel
             _viewModel.ShowErrorMessage(ErrorTextHasWhiteSpace);
             return;
         }
+        else if (groupName.Any(ch => !char.IsLetterOrDigit(ch)))
+        {
+            _viewModel.ShowErrorMessage(ErrorTextHasSpecialCharacters);
+            return;
+        }
+        foreach (GroupData groupData in _dataController.GetAllGroups())
+        {
+            if(groupData.groupName == groupName)
+            {
+                _viewModel.ShowErrorMessage(ErrorTextGroupAlreadyExist);
+                return;
+            }
+        }
+            
         _dataController.AddGroup(groupName);
     }
 

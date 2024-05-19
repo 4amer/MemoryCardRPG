@@ -7,7 +7,7 @@ public class DataInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container.Bind<IDataController>().To<DataController>().FromNew().AsSingle().NonLazy();
+        Container.Bind(typeof(IInitializable), typeof(IDataController)).To<DataController>().FromNew().AsSingle().NonLazy();
         Container.Bind<DictionaryData>().FromNew().AsSingle().NonLazy();
     }
 }
